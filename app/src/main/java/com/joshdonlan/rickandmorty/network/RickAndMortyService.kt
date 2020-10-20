@@ -10,11 +10,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.Date
 
 interface RickAndMortyService {
     @GET("character")
-    suspend fun getCharacters(): CharacterResponse
+    suspend fun getCharacters(@Query("page") page: Int): CharacterResponse
 
     @GET("character/{id}")
     suspend fun getCharacter(@Path("id") id: Int): Character
