@@ -1,15 +1,14 @@
 package com.joshdonlan.rickandmorty.character
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import com.joshdonlan.rickandmorty.R
 import com.joshdonlan.rickandmorty.character.adapter.CharacterAdapter
 import com.joshdonlan.rickandmorty.character.adapter.CharacterListener
@@ -23,8 +22,6 @@ class CharacterActivity : AppCompatActivity(), CharacterCardView {
     private val viewModel: CharacterViewModel by lazy { ViewModelProvider(this, CharacterViewModelFactory()).get(CharacterViewModel::class.java) }
     private val characterAdapter by lazy { initCharacterAdapter() }
     private val characterCard by lazy { findViewById<CharacterCard>(R.id.character_card) }
-    private val nextPage by lazy { findViewById<Button>(R.id.button_next) }
-    private val prevPage by lazy { findViewById<Button>(R.id.button_prev) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,31 +40,10 @@ class CharacterActivity : AppCompatActivity(), CharacterCardView {
             showCharacter(it)
         })
 
-        viewModel.previous.observe(this, Observer {
-            prevPage.isEnabled = it != 0
-        })
-
-        viewModel.next.observe(this, Observer {
-            nextPage.isEnabled = it != 0
-        })
-
         getCharacterCardDismissView().setOnClickListener {
             viewModel.clearCurrentCharacter()
         }
 
-        prevPage.setOnClickListener {
-            viewModel.loadPrevious()
-        }
-
-        nextPage.setOnClickListener {
-            viewModel.loadNext()
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getCharacters()
     }
 
     override fun getCharacterCardDismissView(): View {
@@ -83,7 +59,7 @@ class CharacterActivity : AppCompatActivity(), CharacterCardView {
         return CharacterAdapter(characterListener)
     }
 
-    private fun updateCharacters(characters: List<Character>) {
+    private fun updateCharacters(characters: PagedList<Character>) {
         characterAdapter.submitList(characters)
     }
 

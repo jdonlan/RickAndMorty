@@ -2,13 +2,14 @@ package com.joshdonlan.rickandmorty.character.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.joshdonlan.rickandmorty.databinding.ItemCharacterBinding
 import com.joshdonlan.rickandmorty.model.Character
 
-class CharacterAdapter(private val clickListener: CharacterListener): ListAdapter<Character, CharacterViewHolder>(CharacterDiffCallback()) {
+class CharacterAdapter(private val clickListener: CharacterListener): PagedListAdapter<Character, CharacterViewHolder>(CharacterDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         return CharacterViewHolder.from(parent)
@@ -33,9 +34,11 @@ class CharacterDiffCallback: DiffUtil.ItemCallback<Character>() {
 
 class CharacterViewHolder(private val binding: ItemCharacterBinding): RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(clickListener: CharacterListener, item: Character) {
-        binding.character = item
-        binding.clickListener = clickListener
+    fun bind(clickListener: CharacterListener, item: Character?) {
+        if (item != null) {
+            binding.character = item
+            binding.clickListener = clickListener
+        }
         binding.executePendingBindings()
     }
 
