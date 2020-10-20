@@ -37,6 +37,7 @@ class CharacterViewModel: ViewModel() {
                 _characters.value = response.results
                 _previous.value = response.info.prev?.getLastQueryStringValue() ?: 0
                 _next.value = response.info.next?.getLastQueryStringValue() ?: 0
+                currentPage = page
             } catch (t: Throwable) {
                 Log.e(CharacterViewModel::class.java.simpleName,"There was an error retrieving data: ${t.message}")
             }
