@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PageKeyedDataSource
 import com.joshdonlan.rickandmorty.model.Character
 import com.joshdonlan.rickandmorty.network.RickAndMortyApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CharacterDataSource(private val viewModel: CharacterViewModel): PageKeyedDataSource<Int, Character>() {
@@ -15,7 +16,7 @@ class CharacterDataSource(private val viewModel: CharacterViewModel): PageKeyedD
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Character>
     ) {
-        viewModel.viewModelScope.launch {
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = dataService.getCharacters(1)
                 callback.onResult(response.results, null, 2)
@@ -26,7 +27,7 @@ class CharacterDataSource(private val viewModel: CharacterViewModel): PageKeyedD
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Character>) {
-        viewModel.viewModelScope.launch {
+        viewModel.viewModelScope.launch(Dispatchers.IO) {
             try {
                 val page = params.key
                 val response = dataService.getCharacters(page)
