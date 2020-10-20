@@ -11,18 +11,20 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".character.CharacterActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/character_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/base_margin"
+            android:background="@color/cardview_dark_background"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/button_next"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_character" />
 
         <Button
             android:id="@+id/button_prev"
@@ -42,6 +44,16 @@
             android:layout_margin="@dimen/base_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_prev"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.joshdonlan.rickandmorty.character.layout.CharacterCard
+            android:id="@+id/character_card"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

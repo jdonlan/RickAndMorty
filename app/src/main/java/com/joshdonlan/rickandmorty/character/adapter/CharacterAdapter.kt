@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.joshdonlan.rickandmorty.databinding.CharacterItemBinding
+import com.joshdonlan.rickandmorty.databinding.ItemCharacterBinding
 import com.joshdonlan.rickandmorty.model.Character
 
 class CharacterAdapter(private val clickListener: CharacterListener): ListAdapter<Character, CharacterViewHolder>(CharacterDiffCallback()) {
@@ -21,18 +21,17 @@ class CharacterAdapter(private val clickListener: CharacterListener): ListAdapte
 
 }
 
-
 class CharacterDiffCallback: DiffUtil.ItemCallback<Character>() {
     override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
-        return oldItem == newItem
+        return oldItem.name == newItem.name && oldItem.species == newItem.species && oldItem.image == newItem.image
     }
 }
 
-class CharacterViewHolder(val binding: CharacterItemBinding): RecyclerView.ViewHolder(binding.root) {
+class CharacterViewHolder(private val binding: ItemCharacterBinding): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(clickListener: CharacterListener, item: Character) {
         binding.character = item
@@ -43,7 +42,7 @@ class CharacterViewHolder(val binding: CharacterItemBinding): RecyclerView.ViewH
     companion object {
         fun from(parent: ViewGroup): CharacterViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val binding = CharacterItemBinding.inflate(layoutInflater, parent, false)
+            val binding = ItemCharacterBinding.inflate(layoutInflater, parent, false)
 
             return CharacterViewHolder(binding)
         }

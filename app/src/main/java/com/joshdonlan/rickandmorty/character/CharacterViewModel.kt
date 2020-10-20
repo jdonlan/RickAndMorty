@@ -16,6 +16,10 @@ class CharacterViewModel: ViewModel() {
     val characters: LiveData<List<Character>>
         get() = _characters
 
+    private val _character = MutableLiveData<Character>()
+    val character: LiveData<Character>
+        get() = _character
+
     fun getCharacters() {
         viewModelScope.launch {
             try {
@@ -29,6 +33,11 @@ class CharacterViewModel: ViewModel() {
 
     fun onCharacterClicked(character: Character) {
         Log.d(CharacterViewModel::class.java.simpleName, character.name)
+        _character.value = character
+    }
+
+    fun clearCurrentCharacter() {
+        _character.value = null
     }
 
 }
